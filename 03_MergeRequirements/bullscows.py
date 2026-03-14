@@ -4,6 +4,8 @@ guessed letters that appear in the secret word, for which the position is
 guessed incorrectly are considered cows.
 """
 
+import random
+
 
 def bullscows(guess: str, secret: str) -> (int, int):
     """Get the number of bulls and cows."""
@@ -14,3 +16,16 @@ def bullscows(guess: str, secret: str) -> (int, int):
     cows = [guess[i] != secret[i] and guess[i] in secret for i in range(l)]
     n_cows = cows.count(True)
     return n_bulls, n_cows
+
+
+def gameplay(ask: callable, inform: callable, words: list[str]) -> int:
+    """Main gameloop."""
+    secret = random.choice(words)
+    attempts = 0
+    while True:
+        guess = ask("Введите слово: ", words)
+        attempts += 1
+        bulls, cows = bullscows(guess, secret)
+        inform("Быки: {}, Коровы: {}", bulls, cows)
+        if guess == secret:
+            return attempts
