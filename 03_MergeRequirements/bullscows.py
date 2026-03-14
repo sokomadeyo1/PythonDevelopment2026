@@ -8,6 +8,7 @@ import argparse
 import random
 from pathlib import Path
 from urllib.request import urlopen
+from cowsay import cowsay
 
 
 def bullscows(guess: str, secret: str) -> (int, int):
@@ -36,7 +37,7 @@ def gameplay(ask: callable, inform: callable, words: list[str]) -> int:
 
 def inform(format: str, *args) -> None:
     """Formatted output."""
-    print(format.format(*args))
+    print(cowsay(format.format(*args)))
 
 
 def ask(prompt: str, valid: list[str] = None) -> str:
