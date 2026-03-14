@@ -31,6 +31,11 @@ def gameplay(ask: callable, inform: callable, words: list[str]) -> int:
             return attempts
 
 
+def inform(format: str, *args) -> None:
+    """Formatted output."""
+    print(format.format(*args))
+
+
 def ask(prompt: str, valid: list[str] = None) -> str:
     """Input a word from valid words list."""
     if valid is None:
