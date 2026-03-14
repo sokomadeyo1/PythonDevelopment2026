@@ -4,7 +4,10 @@ guessed letters that appear in the secret word, for which the position is
 guessed incorrectly are considered cows.
 """
 
+import argparse
 import random
+from pathlib import Path
+from urllib.request import urlopen
 
 
 def bullscows(guess: str, secret: str) -> (int, int):
@@ -49,8 +52,35 @@ def ask(prompt: str, valid: list[str] = None) -> str:
 
 
 def parseargs() -> (list[str], int):
-    # TODO: Implement
-    return ["foo", "bar", "baz"], 3
+    """Parse cmdline args and read the dictionary."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "dict",
+        type=str,
+        help="filename or a URL to the dictionary to be used in game",
+    )
+    parser.add_argument(
+        "length",
+        type=int,
+        nargs="?",
+        default=5,
+        help="length of the words to be used in game",
+    )
+    args = parser.parse_args()
+
+    path = args.dict
+    dict = []
+    dict_file = Path(path)
+    if dict_file.exists():
+        with open(path) as f:
+            dict = [l.strip() for l in f.readlines()]
+    elif path.startswith("http://") or path.startswith("https://"):
+        with urlopen(path) as f:
+            dict = [l.decode().strip() for l in f.readlines()]
+    else:
+        raise ValueError(f"file {path} not found")
+
+    return dict, args.length
 
 
 if __name__ == "__main__":
