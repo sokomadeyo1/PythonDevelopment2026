@@ -29,3 +29,15 @@ def gameplay(ask: callable, inform: callable, words: list[str]) -> int:
         inform("Быки: {}, Коровы: {}", bulls, cows)
         if guess == secret:
             return attempts
+
+
+def ask(prompt: str, valid: list[str] = None) -> str:
+    """Input a word from valid words list."""
+    if valid is None:
+        return input(prompt)
+    while True:
+        inp = input(prompt)
+        if inp in valid:
+            return inp
+        else:
+            print("Invalid input")
