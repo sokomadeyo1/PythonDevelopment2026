@@ -46,3 +46,15 @@ def ask(prompt: str, valid: list[str] = None) -> str:
             return inp
         else:
             print("Invalid input")
+
+
+def parseargs() -> (list[str], int):
+    # TODO: Implement
+    return ["foo", "bar", "baz"], 3
+
+
+if __name__ == "__main__":
+    dict, length = parseargs()
+    dict_filtered = [word for word in dict if len(word) == length]
+    attempts = gameplay(ask, inform, dict_filtered)
+    print(f"Correct! You guessed the word in {attempts} attempts")
