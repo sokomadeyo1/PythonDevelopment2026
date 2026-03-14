@@ -42,6 +42,7 @@ def inform(format: str, *args) -> None:
 
 def ask(prompt: str, valid: list[str] = None) -> str:
     """Input a word from valid words list."""
+    prompt = cowsay(prompt) + "\n=> "
     if valid is None:
         return input(prompt)
     while True:
