@@ -38,6 +38,7 @@ class CmdCows(cmd.Cmd):
             return
         if delim == 0 or delim == len(args) - 1:
             self.do_help("cowsay")
+            return
 
         try:
             Cow1 = self.parse_cow_args(args[:delim])
@@ -45,6 +46,7 @@ class CmdCows(cmd.Cmd):
             print(twocows(Cow1, Cow2))
         except ValueError:
             self.do_help("cowsay")
+            return
 
     def do_cowthink(self, arg):
         """cowthink msg1 [animal {param=value}] reply msg2 [animal {param=value}]
@@ -65,6 +67,7 @@ class CmdCows(cmd.Cmd):
             return
         if delim == 0 or delim == len(args) - 1:
             self.do_help("cowthink")
+            return
 
         try:
             Cow1 = self.parse_cow_args(args[:delim])
@@ -72,6 +75,7 @@ class CmdCows(cmd.Cmd):
             print(twocows_think(Cow1, Cow2))
         except ValueError:
             self.do_help("cowthink")
+            return
 
     def do_EOF(self, arg):
         return -1
