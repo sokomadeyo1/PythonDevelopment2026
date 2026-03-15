@@ -1,7 +1,7 @@
 import cmd
 from shlex import split
 
-from cowsay import Option, list_cows
+from cowsay import Option, list_cows, make_bubble
 from twocows import Cow, twocows, twocows_think
 
 
@@ -14,7 +14,10 @@ class CmdCows(cmd.Cmd):
             print(cow)
 
     def do_make_bubble(self, arg):
-        pass
+        """make_bubble text
+        Print text, putting it inside a bubble.
+        """
+        print(make_bubble(arg))
 
     def do_cowsay(self, arg):
         """cowsay msg1 [animal {param=value}] reply msg2 [animal {param=value}]
