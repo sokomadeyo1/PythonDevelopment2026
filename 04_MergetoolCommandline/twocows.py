@@ -56,12 +56,12 @@ def twocows_think(cow1: Cow, cow2: Cow) -> str:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-e", type=str, default="oo")
+    parser.add_argument("-e", type=str, default=Option.eyes)
     parser.add_argument("-f", type=str, default="default")
     parser.add_argument("-n", action="store_true")
     parser.add_argument("msg1", type=str)
 
-    parser.add_argument("-E", type=str, default="oo")
+    parser.add_argument("-E", type=str, default=Option.eyes)
     parser.add_argument("-F", type=str, default="default")
     parser.add_argument("-N", action="store_true")
     parser.add_argument("msg2", type=str)
