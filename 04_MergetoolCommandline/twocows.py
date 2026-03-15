@@ -1,7 +1,7 @@
 import argparse
 from dataclasses import dataclass
 
-from cowsay import cowsay, cowthink
+from cowsay import Option, cowsay, cowthink
 
 
 def halign_bot(text_l: str, text_r: str) -> str:
@@ -22,14 +22,27 @@ def halign_bot(text_l: str, text_r: str) -> str:
 class Cow:
     msg: str
     cow: str = "default"
-    eyes: str = "oo"
+    eyes: str = Option.eyes
+    tongue: str = Option.tongue
     wrap: bool = True
 
     def __str__(self):
-        return cowsay(self.msg, cow=self.cow, eyes=self.eyes, wrap_text=self.wrap)
+        return cowsay(
+            self.msg,
+            cow=self.cow,
+            eyes=self.eyes,
+            tongue=self.tongue,
+            wrap_text=self.wrap,
+        )
 
     def think(self):
-        return cowthink(self.msg, cow=self.cow, eyes=self.eyes, wrap_text=self.wrap)
+        return cowthink(
+            self.msg,
+            cow=self.cow,
+            eyes=self.eyes,
+            tongue=self.tongue,
+            wrap_text=self.wrap,
+        )
 
 
 def twocows(cow1: Cow, cow2: Cow) -> str:
