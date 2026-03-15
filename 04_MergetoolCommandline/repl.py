@@ -2,7 +2,7 @@ import cmd
 from shlex import split
 
 from cowsay import Option, list_cows
-from twocows import Cow, twocows
+from twocows import Cow, twocows, twocows_think
 
 
 class CmdCows(cmd.Cmd):
@@ -27,6 +27,19 @@ class CmdCows(cmd.Cmd):
         Cow2 = self.parse_cow_args(args[delim + 1 :])
         print(twocows(Cow1, Cow2))
 
+    def do_cowthink(self, arg):
+        args = split(arg)
+        try:
+            delim = args.index("reply")
+        except ValueError:
+            self.do_help("cowthink")
+            return
+        if delim == 0 or delim == len(args) - 1:
+            self.do_help("cowthink")
+
+        Cow1 = self.parse_cow_args(args[:delim])
+        Cow2 = self.parse_cow_args(args[delim + 1 :])
+        print(twocows_think(Cow1, Cow2))
 
     def do_EOF(self, arg):
         return -1
