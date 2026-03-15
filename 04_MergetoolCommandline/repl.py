@@ -70,6 +70,13 @@ class CmdCows(cmd.Cmd):
     def do_EOF(self, arg):
         return -1
 
+    def complete_cowsay(self, text, line, begin, end):
+        cows = list_cows()
+        return [cow for cow in cows if cow.startswith(text)]
+
+    def complete_cowthink(self, text, line, begin, end):
+        return self.complete_cowsay(text, line, begin, end)
+
     def parse_cow_args(self, args):
         msg = args[0]
         cow = "default"
