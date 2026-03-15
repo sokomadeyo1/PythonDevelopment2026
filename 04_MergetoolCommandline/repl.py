@@ -39,9 +39,12 @@ class CmdCows(cmd.Cmd):
         if delim == 0 or delim == len(args) - 1:
             self.do_help("cowsay")
 
-        Cow1 = self.parse_cow_args(args[:delim])
-        Cow2 = self.parse_cow_args(args[delim + 1 :])
-        print(twocows(Cow1, Cow2))
+        try:
+            Cow1 = self.parse_cow_args(args[:delim])
+            Cow2 = self.parse_cow_args(args[delim + 1 :])
+            print(twocows(Cow1, Cow2))
+        except ValueError:
+            self.do_help("cowsay")
 
     def do_cowthink(self, arg):
         """cowthink msg1 [animal {param=value}] reply msg2 [animal {param=value}]
@@ -63,9 +66,12 @@ class CmdCows(cmd.Cmd):
         if delim == 0 or delim == len(args) - 1:
             self.do_help("cowthink")
 
-        Cow1 = self.parse_cow_args(args[:delim])
-        Cow2 = self.parse_cow_args(args[delim + 1 :])
-        print(twocows_think(Cow1, Cow2))
+        try:
+            Cow1 = self.parse_cow_args(args[:delim])
+            Cow2 = self.parse_cow_args(args[delim + 1 :])
+            print(twocows_think(Cow1, Cow2))
+        except ValueError:
+            self.do_help("cowthink")
 
     def do_EOF(self, arg):
         return -1
@@ -93,6 +99,8 @@ class CmdCows(cmd.Cmd):
         cow = "default"
         if len(args) > 1:
             cow = args[1]
+        if any(["=" not in arg for arg in args[2:]]):
+            raise ValueError
         params = {
             param: value
             for (param, value) in [
