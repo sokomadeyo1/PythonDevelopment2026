@@ -71,6 +71,17 @@ class CmdCows(cmd.Cmd):
         return -1
 
     def complete_cowsay(self, text, line, begin, end):
+        # check if the parameter under the cursor is cow:
+        # either the current parameter should have index 2
+        # or the one before the previous should be "reply"
+        arg_idx = len(split(line[:begin]))
+        if arg_idx != 2:
+            if arg_idx < 2:
+                return []
+            args = split(line)
+            if args[arg_idx - 2] != "reply":
+                return []
+
         cows = list_cows()
         return [cow for cow in cows if cow.startswith(text)]
 
