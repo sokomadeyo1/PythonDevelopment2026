@@ -7,6 +7,9 @@ from twocows import Cow, twocows, twocows_think
 
 class CmdCows(cmd.Cmd):
     def do_list_cows(self, arg):
+        """list_cows
+        List available animals.
+        """
         for cow in list_cows():
             print(cow)
 
@@ -14,6 +17,16 @@ class CmdCows(cmd.Cmd):
         pass
 
     def do_cowsay(self, arg):
+        """cowsay msg1 [animal {param=value}] reply msg2 [animal {param=value}]
+        Print two animals' dialogue.
+
+        arguments:
+            msg(1,2)    each animal's lines
+            animal      animal file, see list_cows
+            parameters:
+                eyes
+                tongue
+        """
         args = split(arg)
         try:
             delim = args.index("reply")
@@ -28,6 +41,16 @@ class CmdCows(cmd.Cmd):
         print(twocows(Cow1, Cow2))
 
     def do_cowthink(self, arg):
+        """cowthink msg1 [animal {param=value}] reply msg2 [animal {param=value}]
+        Print two animals' internal monologues.
+
+        arguments:
+            msg(1,2)    each animal's lines
+            animal      animal file, see list_cows
+            parameters:
+                eyes
+                tongue
+        """
         args = split(arg)
         try:
             delim = args.index("reply")
