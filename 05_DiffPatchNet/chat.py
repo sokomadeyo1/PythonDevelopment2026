@@ -12,7 +12,10 @@ HELPMSG = """Available commands:
     say COW_NAME MSG    send message to the specified user
     yield MSG           send message to all other users
     quit                disconnect"""
+LOGINMSG = """You have to log in in order to use the chat."""
+
 clients = {}
+cows = {}
 
 
 async def chat(reader, writer):
@@ -39,6 +42,8 @@ async def chat(reader, writer):
     receive.cancel()
     print(me, "DONE")
     del clients[me]
+    if me in cows.keys():
+        del cows[me]
     writer.close()
     await writer.wait_closed()
 
@@ -49,39 +54,60 @@ async def exec_cmd(prompt: list[str], who, clients):
         return
     match prompt[0]:
         case "who":
-            await clients[who].put(clients.keys())
+            for cow in cows.values():
+                await clients[who].put(cow)
 
         case "cows":
             for cow in COWS:
-                if cow not in clients.keys():
+                if cow not in cows.values():
                     await clients[who].put(cow)
 
         case "login":
-            pass
+            if len(prompt) < 2:
+                await clients[who].put(HELPMSG)
+                return
+            cow = prompt[1]
+            if cow in cows.values():
+                await clients[who].put(f"Cow {cow} is already taken.")
+                return
+            cows[who] = cow
+            await clients[who].put(f"Logged in as {cow}.")
 
         case "say":
+            if who not in cows.keys():
+                await clients[who].put(LOGINMSG)
+                return
             if len(prompt) < 3:
                 await clients[who].put(HELPMSG)
                 return
             to = prompt[1]
             msg = " ".join(prompt[2:])
-            if to in clients.keys():
-                await clients[to].put(f"{who} {msg}")
+            if to in cows.values():
+                # get the stream key
+                to = list(cows.keys())[list(cows.values()).index(to)]
+                await clients[to].put(cowsay(msg, cow=cows[who]))
             else:
                 await clients[who].put(f"User not found: {to}")
 
         case "yield":
+            if who not in cows.keys():
+                await clients[who].put(LOGINMSG)
+                return
             if len(prompt) < 2:
                 await clients[who].put(HELPMSG)
                 return
             msg = " ".join(prompt[1:])
             for to in clients.values():
                 if to is not clients[who]:
-                    await to.put(f"{who} {msg}")
+                    await to.put(cowsay(msg, cow=cows[who]))
 
         case "quit":
             print(who, "DONE")
-            del clients[who]
+            if who not in cows.keys():
+                await clients[who].put("You are not logged in.")
+            else:
+                del cows[who]
+                await clients[who].put("Logged out.")
 
         case _:
             await clients[who].put(HELPMSG)
