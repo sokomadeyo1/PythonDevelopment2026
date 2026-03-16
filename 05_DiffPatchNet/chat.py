@@ -97,9 +97,9 @@ async def exec_cmd(prompt: list[str], who, clients):
                 await clients[who].put(HELPMSG)
                 return
             msg = " ".join(prompt[1:])
-            for to in clients.values():
-                if to is not clients[who]:
-                    await to.put(cowsay(msg, cow=cows[who]))
+            for to in cows.keys():
+                if to != who:
+                    await clients[to].put(cowsay(msg, cow=cows[who]))
 
         case "quit":
             print(who, "DONE")
